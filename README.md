@@ -43,6 +43,7 @@ Run the Flask app: Flask Run (app.py)
 
 5.Model Training
 
+Refer to  notebooks/my_model/main2.ipynb 
 The model was trained using a labeled dataset of invoice texts. The process involved:
 
 Labelling the data: The annotated files with bounding box coordinates was labelled using the labels provided.
@@ -57,6 +58,7 @@ For more details on the model training, refer to the modeling script in the repo
 
 6.API Endpoints Flask and Postman
 
+Refer to  notebooks/my_model/app.py
 /predict (POST):Using Postman api software we can run the Flask API link in the local host.
 It will accept an invoice image and returns the classified text segments.
 
