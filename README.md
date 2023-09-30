@@ -168,4 +168,33 @@ c.Collect More Data: Lastly, if the circumstances allow, gathering more data can
             
 Replace [CONTAINER_ID] with the actual ID from the previous command.
   
-            
+
+RESOURCES utilized:
+
+Flask API
+Flask Official Documentation: The go-to resource for all Flask-related questions.
+[Flask Docs](https://flask.palletsprojects.com/en/2.0.x/)
+Building a RESTful API with Flask: A great tutorial on how to structure and build APIs using Flask.
+[Miguel Grinberg's Flask Mega-Tutorial]([url](https://blog.miguelgrinberg.com/post/the-flask-mega-tutorial-part-i-hello-world))
+
+Transformers and Hugging Face
+Hugging Face's Transformers: The official documentation for Hugging Face's transformers library.
+[Transformers Docs]([url](https://huggingface.co/docs/transformers/index))
+DistilBERT paper: Read more about the DistilBERT model.
+[DistilBERT, a distilled version of BERT: smaller, faster, cheaper and lighter]([url](https://www.youtube.com/watch?v=cCs8exFrGE8))
+
+Docker
+Docker's Official Documentation: Comprehensive details on how to use Docker.
+[Docker Docs]([url](https://docs.docker.com))
+
+Postman
+Postman Learning Center: Official Postman documentation and tutorials.
+[Postman Learning]([url](https://learning.postman.com))
+API testing using Postman: A beginner’s guide.
+[API Testing using Postman]([url](https://www.guru99.com/postman-tutorial.html))
+
+PyTesseract and OCR
+PyTesseract for OCR: Video by Neural Nine
+[Python-tesseract (pytesseract)]([url](https://www.youtube.com/watch?v=PY_N1XdFp4w))
+
+
