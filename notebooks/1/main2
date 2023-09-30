@@ -1,0 +1,500 @@
+#!/usr/bin/env python
+# coding: utf-8
+
+# In[2]:
+
+
+import os
+
+# Initialize counts
+jpg_count = 0
+annotated_count = 0
+json_count = 0
+
+# Define the folder path
+folder_path = "/Users/fathimazajel/Desktop/image_invoice_processing_data/SROIE2019/0325updated.task2train(626p)"
+
+# Iterate over files in the directory
+for filename in os.listdir(folder_path):
+    if filename.endswith(".jpg"):
+        jpg_count += 1
+    elif filename.endswith(".txt"):
+        with open(os.path.join(folder_path, filename), "r") as f:
+            first_char = f.read(1)  # Read the first character
+
+            if first_char.isdigit():
+                annotated_count += 1
+            elif first_char == '{':
+                json_count += 1
+
+# Display the counts
+print(f"Total .jpg files: {jpg_count}")
+print(f"Total annotated .txt files: {annotated_count}")
+print(f"Total json .txt files: {json_count}")
+
+
+# In[3]:
+
+
+import os
+
+# Initialize counts
+jpg_count = 0
+annotated_count = 0
+json_count = 0
+
+# Define the folder path
+folder_path = "/Users/fathimazajel/Desktop/image_invoice_processing_data/SROIE2019/0325updated.task1train(626p)"
+
+# Iterate over files in the directory
+for filename in os.listdir(folder_path):
+    if filename.endswith(".jpg"):
+        jpg_count += 1
+    elif filename.endswith(".txt"):
+        with open(os.path.join(folder_path, filename), "r") as f:
+            first_char = f.read(1)  # Read the first character
+
+            if first_char.isdigit():
+                annotated_count += 1
+            elif first_char == '{':
+                json_count += 1
+
+# Display the counts
+print(f"Total .jpg files: {jpg_count}")
+print(f"Total annotated .txt files: {annotated_count}")
+print(f"Total json .txt files: {json_count}")
+
+
+# In[4]:
+
+
+import os
+
+# Define the folder paths
+folder_path1 = "/Users/fathimazajel/Desktop/image_invoice_processing_data/SROIE2019/0325updated.task1train(626p)"
+folder_path2 = "/Users/fathimazajel/Desktop/image_invoice_processing_data/SROIE2019/0325updated.task2train(626p)"
+
+# Get list of .jpg files in each directory
+jpg_files1 = {f for f in os.listdir(folder_path1) if f.endswith('.jpg')}
+jpg_files2 = {f for f in os.listdir(folder_path2) if f.endswith('.jpg')}
+
+# Find files that are in folder 1 but not in folder 2 and vice-versa
+only_in_folder1 = jpg_files1 - jpg_files2
+only_in_folder2 = jpg_files2 - jpg_files1
+
+# Display results
+if only_in_folder1:
+    print("Files only in Folder 1:")
+    for f in sorted(only_in_folder1):
+        print(f)
+
+if only_in_folder2:
+    print("\nFiles only in Folder 2:")
+    for f in sorted(only_in_folder2):
+        print(f)
+
+if not only_in_folder1 and not only_in_folder2:
+    print("Both folders have matching .jpg files!")
+
+
+# In[5]:
+
+
+import os
+import re
+
+# Function to sanitize filename
+def sanitize_filename(filename):
+    return re.sub(r'\(.*?\)', '', filename)
+
+# Define the folder paths
+folder_path1 = "/Users/fathimazajel/Desktop/image_invoice_processing_data/SROIE2019/0325updated.task1train(626p)"
+folder_path2 = "/Users/fathimazajel/Desktop/image_invoice_processing_data/SROIE2019/0325updated.task2train(626p)"
+
+# Get list of sanitized .jpg filenames in each directory
+jpg_files1 = {sanitize_filename(f) for f in os.listdir(folder_path1) if f.endswith('.jpg')}
+jpg_files2 = {sanitize_filename(f) for f in os.listdir(folder_path2) if f.endswith('.jpg')}
+
+# Find files that are in folder 1 but not in folder 2 and vice-versa
+only_in_folder1 = jpg_files1 - jpg_files2
+only_in_folder2 = jpg_files2 - jpg_files1
+
+# Display results
+print(f"Count of unique files in Folder 1: {len(only_in_folder1)}")
+print(f"Count of unique files in Folder 2: {len(only_in_folder2)}")
+
+if only_in_folder1:
+    print("\nUnique files in Folder 1:")
+    for f in sorted(only_in_folder1):
+        print(f)
+
+if only_in_folder2:
+    print("\nUnique files in Folder 2:")
+    for f in sorted(only_in_folder2):
+        print(f)
+
+if not only_in_folder1 and not only_in_folder2:
+    print("Both folders have matching .jpg files!")
+
+
+# In[7]:
+
+
+import os
+import re
+import shutil
+
+# Paths for the folders
+folder_path1 = "/Users/fathimazajel/Desktop/image_invoice_processing_data/SROIE2019/0325updated.task1train(626p)"
+folder_path2 = "/Users/fathimazajel/Desktop/image_invoice_processing_data/SROIE2019/0325updated.task2train(626p)"
+destination_folder = "/Users/fathimazajel/Desktop/image_invoice_processing_data/SROIE2019/img"
+
+# Exclude files that have "()" in their filename
+def exclude_files(filename):
+    return not bool(re.search(r'\(.*?\)', filename))
+
+# Gather .jpg filenames from both directories
+jpg_files1 = {f for f in os.listdir(folder_path1) if f.endswith('.jpg') and exclude_files(f)}
+jpg_files2 = {f for f in os.listdir(folder_path2) if f.endswith('.jpg') and exclude_files(f)}
+
+# Identify files that are common to both directories
+common_files = jpg_files1.intersection(jpg_files2)
+
+# Copy the common files to the destination folder
+for file in common_files:
+    shutil.copy2(os.path.join(folder_path1, file), destination_folder)
+
+# Print the result
+print(f"Total common .jpg files copied: {len(common_files)}")
+
+
+# In[8]:
+
+
+import os
+import shutil
+
+# Paths
+txt_folder_path = "/Users/fathimazajel/Desktop/image_invoice_processing_data/SROIE2019/0325updated.task1train(626p)"
+img_folder_path = "/Users/fathimazajel/Desktop/image_invoice_processing_data/SROIE2019/img"
+destination_folder = "/Users/fathimazajel/Desktop/image_invoice_processing_data/SROIE2019/box"
+
+# Gather .jpg basenames from img_folder_path
+jpg_files = {os.path.splitext(f)[0] for f in os.listdir(img_folder_path) if f.endswith('.jpg')}
+
+# Check which .txt files match the .jpg base names
+matching_files = [f for f in os.listdir(txt_folder_path) if f.endswith('.txt') and os.path.splitext(f)[0] in jpg_files]
+
+# Copy the matching files to the destination folder with .csv extension
+for file in matching_files:
+    shutil.copy2(os.path.join(txt_folder_path, file), os.path.join(destination_folder, os.path.splitext(file)[0] + '.csv'))
+
+# Print the result
+print(f"Total matching .txt files copied as .csv: {len(matching_files)}")
+
+
+# In[9]:
+
+
+import os
+import shutil
+
+# Paths
+txt_folder_path = "/Users/fathimazajel/Desktop/image_invoice_processing_data/SROIE2019/0325updated.task2train(626p)"
+img_folder_path = "/Users/fathimazajel/Desktop/image_invoice_processing_data/SROIE2019/img"
+destination_folder = "/Users/fathimazajel/Desktop/image_invoice_processing_data/SROIE2019/key"
+
+# Ensure destination directory exists
+os.makedirs(destination_folder, exist_ok=True)
+
+# Gather .jpg basenames from img_folder_path
+jpg_files = {os.path.splitext(f)[0] for f in os.listdir(img_folder_path) if f.endswith('.jpg')}
+
+# Check which .txt files match the .jpg base names
+matching_files = [f for f in os.listdir(txt_folder_path) if f.endswith('.txt') and os.path.splitext(f)[0] in jpg_files]
+
+# Copy the matching files to the destination folder with .json extension
+for file in matching_files:
+    shutil.copy2(os.path.join(txt_folder_path, file), os.path.join(destination_folder, os.path.splitext(file)[0] + '.json'))
+
+# Print the result
+print(f"Total matching .txt files copied as .json: {len(matching_files)}")
+
+
+# In[5]:
+
+
+import pandas as pd
+import json
+import os
+import glob
+
+# Paths to the directories
+csv_folder = '/Users/fathimazajel/Documents/GitHub/image_invoice_reader/data/box'
+json_folder = '/Users/fathimazajel/Documents/GitHub/image_invoice_reader/data/key'
+
+# List all files
+csv_files = glob.glob(os.path.join(csv_folder, '*.csv'))
+json_files = glob.glob(os.path.join(json_folder, '*.json'))
+
+# Create a dictionary of JSON files
+json_file_dict = {os.path.splitext(os.path.basename(jf))[0]: jf for jf in json_files}
+
+# Initialize lists to hold texts and labels
+texts = []
+labels = []
+
+# Process each CSV file
+for csv_file in csv_files:
+    csv_filename_without_extension = os.path.splitext(os.path.basename(csv_file))[0]
+    
+    json_file = json_file_dict.get(csv_filename_without_extension)
+    if json_file:
+        # Load data
+        df_csv = pd.read_csv(csv_file, header=None, sep="\t")  # Adjust parameters if needed
+        
+        with open(json_file, 'r') as file:
+            json_data = json.load(file)
+        
+        # Extract and label data
+        for index, row in df_csv.iterrows():
+            text_segment = str(row[8]).strip()  # The ninth column contains the text
+            
+            # Simple method to match and label text segments
+            if text_segment in json_data["company"]:
+                labels.append("company")
+            elif text_segment in json_data["date"]:
+                labels.append("date")
+            elif text_segment in json_data["address"]:
+                labels.append("address")
+            elif text_segment in json_data["total"]:
+                labels.append("total")
+            else:
+                labels.append("other")
+            
+            texts.append(text_segment)
+            
+    else:
+        print(f"No corresponding JSON file found for {csv_file}")
+        
+        
+    # ... (previous code)
+
+# Extract and label data
+for index, row in df_csv.iterrows():
+    if len(row) > 8:  # Make sure the row has at least 9 columns
+        text_segment = str(row[8]).strip()  # The ninth column contains the text
+        
+        # Simple method to match and label text segments
+        if text_segment in json_data["company"]:
+            labels.append("company")
+        elif text_segment in json_data["date"]:
+            labels.append("date")
+        elif text_segment in json_data["address"]:
+            labels.append("address")
+        elif text_segment in json_data["total"]:
+            labels.append("total")
+        else:
+            labels.append("other")
+        
+        texts.append(text_segment)
+    else:
+        print(f"Row {index} in file {csv_file} does not have 9 columns.")
+
+
+# In[18]:
+
+
+pip install pandas openpyxl
+
+
+# In[1]:
+
+
+import os
+import pandas as pd
+
+# Source and destination directories
+source_dir = "/Users/fathimazajel/Documents/GitHub/image_invoice_reader/data/box"
+dest_dir = "/Users/fathimazajel/Documents/GitHub/image_invoice_reader/data/box2"
+
+# Ensure destination directory exists
+os.makedirs(dest_dir, exist_ok=True)
+
+# List all .txt files in source directory
+txt_files = [f for f in os.listdir(source_dir) if f.endswith('.txt')]
+
+for txt_file in txt_files:
+    # Build the corresponding .xls filename
+    xls_file = os.path.splitext(txt_file)[0] + ".xls"
+    
+    # Read each line from the txt file, split the data, and collect in a list
+    data_list = []
+    with open(os.path.join(source_dir, txt_file), 'r', encoding='utf-8') as infile:
+        for line in infile:
+            # Split by comma and extract columns and text
+            columns = line.strip().split(",")[:8]
+            text = ",".join(line.strip().split(",")[8:])
+            data_list.append(columns + [text])
+
+    # Convert the data list to a DataFrame and write to Excel
+    df = pd.DataFrame(data_list, columns=["Column1", "Column2", "Column3", "Column4", "Column5", "Column6", "Column7", "Column8", "Text"])
+    df.to_excel(os.path.join(dest_dir, xls_file), index=False, engine='openpyxl')
+
+print(f"Converted {len(txt_files)} .txt files to .xls in {dest_dir}")
+
+
+# In[2]:
+
+
+import pandas as pd
+
+# Path to the .xls file
+xls_file_path = "/Users/fathimazajel/Documents/GitHub/image_invoice_reader/data/box2/X00016469612.xls"  # replace 'filename.xls' with the name of the file you want to check
+
+# Read the Excel file
+df = pd.read_excel(xls_file_path, engine='openpyxl')
+
+# Get the dimensions
+num_rows, num_cols = df.shape
+
+print(f"The file '{xls_file_path}' has {num_rows} rows and {num_cols} columns.")
+
+
+# In[1]:
+
+
+import pandas as pd
+import json
+import os
+import glob
+
+xls_folder = '/Users/fathimazajel/Documents/GitHub/image_invoice_reader/data/box2'
+json_folder = '/Users/fathimazajel/Documents/GitHub/image_invoice_reader/data/key'
+
+xls_files = glob.glob(os.path.join(xls_folder, '*.xls'))
+json_files = glob.glob(os.path.join(json_folder, '*.json'))
+
+json_file_dict = {os.path.splitext(os.path.basename(jf))[0]: jf for jf in json_files}
+
+texts = []
+labels = []
+
+for xls_file in xls_files:
+    xls_filename_without_extension = os.path.splitext(os.path.basename(xls_file))[0]
+    
+    json_file = json_file_dict.get(xls_filename_without_extension)
+    if json_file:
+        df_xls = pd.read_excel(xls_file, header=None)
+        
+        with open(json_file, 'r') as file:
+            json_data = json.load(file)
+        
+        # Check if 'address' is missing in the JSON data and print the content
+        if 'address' not in json_data:
+            print(f"JSON file {json_file} does not contain the 'address' key.")
+            print(json_data)
+            print("-" * 50)  # Just for better visual separation
+        
+        # This assumes the last column in the xls file is the text
+        for _, row in df_xls.iterrows():
+            segment = str(row.iloc[-1])
+
+            # Basic matching for labels. This is very rudimentary and might need further refinement.
+            if 'company' in json_data and segment in json_data['company']:
+                label = "company"
+            elif 'date' in json_data and segment in json_data['date']:
+                label = "date"
+            elif 'address' in json_data and segment in json_data['address']:
+                label = "address"
+            elif 'total' in json_data and segment in json_data['total']:
+                label = "total"
+            else:
+                label = "other"
+
+            texts.append(segment)
+            labels.append(label)
+
+    else:
+        print(f"No corresponding JSON file found for {xls_file}")
+
+# At this point, texts and labels have your data labeled.
+
+
+# In[2]:
+
+
+# 1. Check if the length of texts and labels lists are the same
+if len(texts) == len(labels):
+    print("All data segments have labels.")
+else:
+    print("Mismatch between number of data segments and labels.")
+
+# 2. Check for "other" labels
+other_count = labels.count("other")
+if other_count > 0:
+    print(f"There are {other_count} data segments labeled as 'other'.")
+
+# 3. Verify the distribution of the labels
+label_distribution = {label: labels.count(label) for label in set(labels)}
+print("Label distribution:", label_distribution)
+
+
+# In[3]:
+
+
+pip install transformers datasets
+
+
+# In[ ]:
+
+
+from transformers import DistilBertTokenizerFast, DistilBertForSequenceClassification, Trainer, TrainingArguments
+from datasets import load_dataset
+
+# Tokenize the texts
+tokenizer = DistilBertTokenizerFast.from_pretrained('distilbert-base-uncased')
+train_encodings = tokenizer(texts, truncation=True, padding=True)
+
+# Convert labels from strings to integers
+label_dict = {"company": 0, "date": 1, "address": 2, "total": 3, "other": 4}
+labels = [label_dict[l] for l in labels]
+
+# Load into a dataset object
+dataset = load_dataset('pandas', data_files={'train': pd.DataFrame({'text': texts, 'labels': labels})})
+
+# Initialize model
+model = DistilBertForSequenceClassification.from_pretrained('distilbert-base-uncased', num_labels=len(label_dict))
+
+# Define training arguments and train
+training_args = TrainingArguments(
+    per_device_train_batch_size=8,
+    num_train_epochs=3,
+    logging_dir='./logs',
+    logging_steps=10,
+    do_train=True,
+    evaluation_strategy="steps",
+    save_steps=10,
+    save_total_limit=2,
+    remove_unused_columns=False,
+)
+
+trainer = Trainer(
+    model=model,
+    args=training_args,
+    train_dataset=dataset['train'],
+    tokenizer=tokenizer,
+)
+
+trainer.train()
+
+# Save the model
+model.save_pretrained("./my_model")
+tokenizer.save_pretrained("./my_model")
+
+
+# In[ ]:
+
+
+
+
